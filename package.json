@@ -1,0 +1,27 @@
+{
+  "name": "super-business-network-skills",
+  "version": "2.0.0",
+  "description": "SAP Business Network (SBN) Catalog & Integration Enablement skill for Joule Work Desktop. Covers supplier catalogs, integration lifecycle, cXML anonymization, supply chain collaboration, BN4L logistics, and SAP APIs.",
+  "author": "SAP Business Network — Catalog & Integration Enablement",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FaheemSAP/super-business-network-skills"
+  },
+  "keywords": [
+    "joule",
+    "skill",
+    "sap",
+    "business-network",
+    "catalog",
+    "integration",
+    "cxml",
+    "cif",
+    "punchout",
+    "supplier",
+    "bn4l",
+    "supply-chain",
+    "api",
+    "ariba"
+  ]
+}
