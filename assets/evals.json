@@ -1,0 +1,77 @@
+{
+  "skill_name": "super-business-network-skills",
+  "version": "2.0.0",
+  "evals": [
+    {
+      "id": 0,
+      "name": "cif-validation-build",
+      "prompt": "I'm a supplier preparing a CIF catalog for SAP Business Network. My header has LOADMODE=X and CURRENCY=USdollars, and one item row has a UnitPrice of -5.00 with a ClassificationCode (UNSPSC) of 123. What will fail validation, what's the severity, and how do I fix them?",
+      "expected_output": "Identifies LOADMODE_VALID error (must be F or I), CURRENCY_VALID error (not ISO 4217; use USD), PRICE_POSITIVE error (must be >= 0), UNSPSC_FORMAT issue (123 not valid 2/4/6/8 digits). Gives rule names and fixes."
+    },
+    {
+      "id": 1,
+      "name": "cxml-anonymize-blanket",
+      "prompt": "I need to anonymize a blanket-order cXML document before loading it into Test Central. What gets replaced, what's preserved, and what happens to the agreement fields?",
+      "expected_output": "Header tokens (#PAYLOADID# etc.), 14 PRESERVE_EXTRINSIC_NAMES kept, mapped extrinsics replaced. Blanket: parentAgreementID→#PARENT_AGREEMENTID#, effectiveDate→yesterday, expirationDate→+100y. Security: defusedxml + hardened lxml."
+    },
+    {
+      "id": 2,
+      "name": "catalog-type-and-timeline",
+      "prompt": "A supplier wants live pricing AND buyers need to search items in Ariba. Which catalog type? How long does integration take?",
+      "expected_output": "PunchOut Level 2 (live pricing + item-level search). Integration: 7 phases, 10-12 weeks first-time."
+    },
+    {
+      "id": 3,
+      "name": "cms-vs-noncms-fields",
+      "prompt": "What's the difference between CMS and Non-CMS realms? How many fields does each support and what load modes are available?",
+      "expected_output": "CMS: 81 fields, LOADMODE=F only, accepts Excel, classification required. Non-CMS: 75 fields, F+I, UNSPSC required. Lists the 6 CMS-only fields."
+    },
+    {
+      "id": 4,
+      "name": "managed-gateway-setup",
+      "prompt": "Walk me through setting up Managed Gateway for a new buyer integration.",
+      "expected_output": "Prerequisites (Role, enable in Settings, both Test+Prod). 6 steps: Basic Info, Connection (HTTPS/AS2/VAN), Document Routing, Cross-References, Connection Test, Activate."
+    },
+    {
+      "id": 5,
+      "name": "supply-chain-forecast",
+      "prompt": "How does forecast collaboration work on SAP Business Network? What messages are exchanged?",
+      "expected_output": "Buyers share demand forecasts, suppliers commit to deliveries. Product activity messages (buyer→supplier) and replenishment messages (supplier→buyer). Integrates with SAP IBP."
+    },
+    {
+      "id": 6,
+      "name": "bn4l-freight-collaboration",
+      "prompt": "What are the core capabilities of SAP BN4L and how does freight collaboration work?",
+      "expected_output": "5 capabilities: Freight Collaboration, GTT, Dock Scheduling, Material Traceability, Intelligent Insights. Freight lifecycle: plan in TM → tender via BN4L → carrier confirms → execute → milestones → settlement → invoice."
+    },
+    {
+      "id": 7,
+      "name": "sap-api-endpoints",
+      "prompt": "What are the cXML endpoint URLs for SAP Business Network and what authentication options are available?",
+      "expected_output": "US: https://s1.ariba.com/Buyer/cxmlchannel/{ANID}, EU: https://s1-eu.ariba.com/Buyer/cxmlchannel/{ANID}. Auth: Shared Secret, Digital Certificates, OAuth 2.0, Basic Auth."
+    },
+    {
+      "id": 8,
+      "name": "validate-xml-cxml-org",
+      "prompt": "Can you validate my cXML document against the official cXML.org DTD?",
+      "expected_output": "References DTD at http://xml.cXML.org/schemas/cXML/1.2.069/cXML.dtd. Explains validation approach: check DOCTYPE declaration, validate structure against schema, verify required elements and attributes."
+    },
+    {
+      "id": 9,
+      "name": "convert-cif-to-xls",
+      "prompt": "I have a .cif file and need to convert it to .xls format. Can you help?",
+      "expected_output": "Parses CIF text (header keywords + FIELDNAMES + DATA rows), maps columns to Excel sheet, writes .xls using openpyxl. Validates output against processing rules."
+    },
+    {
+      "id": 10,
+      "name": "convert-xls-to-cif",
+      "prompt": "I have a catalog in Excel format and need to convert it to CIF text format for upload to SBN.",
+      "expected_output": "Reads Excel columns, detects/maps to CIF FIELDNAMES, generates CIF 3.0 text with proper header (CIF_I_V3.0, CHARSET, CODEFORMAT, LOADMODE, etc.), DATA rows, ENDOFDATA. Applies formula-injection neutralization."
+    },
+    {
+      "id": 11,
+      "name": "generate-cxml-mime",
+      "prompt": "Can you generate a cXML MIME file (CatalogUploadRequest) for submitting my catalog to SAP Business Network?",
+      "expected_output": "Generates multipart/related MIME with: payloadID, boundary, NetworkID credentials, operation=update, Part 1 (text/xml cXML envelope), Part 2 (catalog.cif or catalog.zip). Uses cXML version 1.2.069 DTD."
+    }
+  ]
