@@ -1,0 +1,244 @@
+{
+  "skill_name": "super-business-network-skills",
+  "version": "2.3.0",
+  "evals": [
+    {
+      "id": 0,
+      "name": "cif-validation-build",
+      "domain": "catalog",
+      "prompt": "I'm a supplier preparing a CIF catalog for SAP Business Network. My header has LOADMODE=X and CURRENCY=USdollars, and one item row has a UnitPrice of -5.00 with a ClassificationCode (UNSPSC) of 123. What will fail validation, what's the severity, and how do I fix them?",
+      "expected_output": "Identifies LOADMODE_VALID error (must be F or I), CURRENCY_VALID error (not ISO 4217; use USD), PRICE_POSITIVE error (must be >= 0), UNSPSC_FORMAT issue (123 not valid 2/4/6/8 digits). Gives rule names and fixes."
+    },
+    {
+      "id": 1,
+      "name": "cxml-anonymize-blanket",
+      "domain": "catalog",
+      "prompt": "I need to anonymize a blanket-order cXML document before loading it into Test Central. What gets replaced, what's preserved, and what happens to the agreement fields?",
+      "expected_output": "Header tokens (#PAYLOADID# etc.), 14 PRESERVE_EXTRINSIC_NAMES kept, mapped extrinsics replaced. Blanket: parentAgreementID→#PARENT_AGREEMENTID#, effectiveDate→yesterday, expirationDate→+100y. Security: defusedxml + hardened lxml."
+    },
+    {
+      "id": 2,
+      "name": "catalog-type-and-timeline",
+      "domain": "catalog",
+      "prompt": "A supplier wants live pricing AND buyers need to search items in Ariba. Which catalog type? How long does integration take?",
+      "expected_output": "PunchOut Level 2 (live pricing + item-level search). Integration: 7 phases, 10-12 weeks first-time."
+    },
+    {
+      "id": 3,
+      "name": "cms-vs-noncms-fields",
+      "domain": "catalog",
+      "prompt": "What's the difference between CMS and Non-CMS realms? How many fields does each support and what load modes are available?",
+      "expected_output": "CMS: 81 fields, LOADMODE=F only, accepts Excel, classification required. Non-CMS: 75 fields, F+I, UNSPSC required. Lists the 6 CMS-only fields."
+    },
+    {
+      "id": 4,
+      "name": "managed-gateway-setup",
+      "domain": "integration",
+      "prompt": "Walk me through setting up Managed Gateway for a new buyer integration.",
+      "expected_output": "Prerequisites (Role, enable in Settings). 6 steps: Basic Info, Connection (HTTPS/AS2/VAN), Document Routing, Cross-References, Connection Test, Activate. Explains AS2 vs HTTPS vs VAN with cert requirements."
+    },
+    {
+      "id": 5,
+      "name": "supply-chain-forecast",
+      "domain": "supply-chain",
+      "prompt": "How does forecast collaboration work on SAP Business Network? What messages are exchanged?",
+      "expected_output": "Buyers share demand forecasts, suppliers commit to deliveries. Product activity messages (buyer→supplier) and replenishment messages (supplier→buyer). Integrates with SAP IBP."
+    },
+    {
+      "id": 6,
+      "name": "bn4l-freight-collaboration",
+      "domain": "bn4l",
+      "prompt": "What are the core capabilities of SAP BN4L and how does freight collaboration work?",
+      "expected_output": "5 capabilities: Freight Collaboration, GTT, Dock Scheduling, Material Traceability, Intelligent Insights. Freight lifecycle: plan in TM → tender via BN4L → carrier confirms → execute → milestones → settlement → invoice."
+    },
+    {
+      "id": 7,
+      "name": "sap-api-endpoints",
+      "domain": "api",
+      "prompt": "What are the cXML endpoint URLs for SAP Business Network and what authentication options are available?",
+      "expected_output": "US: s1.ariba.com, EU: s1-eu.ariba.com, AU: s1.au.cloud.ariba.com, JP: s1.jp.cloud.ariba.com, CN: s1.sapariba.cn. Auth: Shared Secret, Digital Certificates, OAuth 2.0, Basic Auth."
+    },
+    {
+      "id": 8,
+      "name": "validate-xml-cxml-org",
+      "domain": "catalog",
+      "prompt": "Can you validate my cXML document against the official cXML.org DTD?",
+      "expected_output": "References DTD at http://xml.cXML.org/schemas/cXML/1.2.069/cXML.dtd. Explains validation approach: check DOCTYPE declaration, validate structure against schema, verify required elements and attributes."
+    },
+    {
+      "id": 9,
+      "name": "convert-cif-to-xls",
+      "domain": "catalog",
+      "prompt": "I have a .cif file and need to convert it to .xls format. Can you help?",
+      "expected_output": "Parses CIF text (header keywords + FIELDNAMES + DATA rows), maps columns to Excel sheet, writes .xls using openpyxl. Validates output against processing rules."
+    },
+    {
+      "id": 10,
+      "name": "convert-xls-to-cif",
+      "domain": "catalog",
+      "prompt": "I have a catalog in Excel format and need to convert it to CIF text format for upload to SBN.",
+      "expected_output": "Reads Excel columns, detects/maps to CIF FIELDNAMES, generates CIF 3.0 text with proper header (CIF_I_V3.0, CHARSET, CODEFORMAT, LOADMODE, etc.), DATA rows, ENDOFDATA. Applies formula-injection neutralization."
+    },
+    {
+      "id": 11,
+      "name": "generate-cxml-mime",
+      "domain": "catalog",
+      "prompt": "Can you generate a cXML MIME file (CatalogUploadRequest) for submitting my catalog to SAP Business Network?",
+      "expected_output": "Generates multipart/related MIME with: payloadID, boundary, NetworkID credentials, operation=update, Part 1 (text/xml cXML envelope), Part 2 (catalog.cif or catalog.zip). Uses cXML version 1.2.069 DTD."
+    },
+    {
+      "id": 12,
+      "name": "invoice-po-flip",
+      "domain": "invoicing",
+      "prompt": "A supplier wants to create an invoice from a received PO on SAP Business Network. Walk them through the PO Flip process.",
+      "expected_output": "Navigate to PO in SBN inbox → Create Invoice → header fields pre-populated → review/adjust quantities and prices → add tax details → submit. Mentions status lifecycle: Draft → Submitted → Sent → Approved/Rejected."
+    },
+    {
+      "id": 13,
+      "name": "invoice-rejection-troubleshoot",
+      "domain": "invoicing",
+      "prompt": "My invoice was rejected by the buyer on SBN. The reason says 'Invoice amount exceeds PO tolerance'. What should I do?",
+      "expected_output": "Explains tolerance rules (buyer-configured in transaction rules). Advises: check PO line amounts vs invoice, ensure quantities match, consider partially invoicing if allowed, contact buyer to understand their tolerance %, possibly issue credit memo and resubmit."
+    },
+    {
+      "id": 14,
+      "name": "credit-memo-creation",
+      "domain": "invoicing",
+      "prompt": "How do I create a credit memo on SAP Business Network?",
+      "expected_output": "Invoices → Credit Memo → select original invoice → enter credit amount → submit. Must reference original invoice number. Use cases: returns, overbilling, pricing adjustments. Line-level credit also available for partial corrections."
+    },
+    {
+      "id": 15,
+      "name": "generate-asn-cxml",
+      "domain": "order-management",
+      "prompt": "Generate a cXML ShipNoticeRequest (ASN) for a shipment I'm sending to my buyer.",
+      "expected_output": "Generates ShipNoticeRequest with ShipNoticeHeader (shipmentID, shipmentDate, carrier), ShipNoticePortion (per PO), ShipNoticeItem (per line). Includes tracking number, ship-from address, estimated delivery date. References DTD 1.2.069."
+    },
+    {
+      "id": 16,
+      "name": "order-confirmation-cxml",
+      "domain": "order-management",
+      "prompt": "I want to confirm a purchase order but propose a different delivery date. How do I send an OC with changes?",
+      "expected_output": "ConfirmationRequest with ConfirmationHeader type=accept_changes. ConfirmationItem carries updated deliveryDate. Explains response types: accept, accept_changes, reject. References 11 standard rejection reason codes."
+    },
+    {
+      "id": 17,
+      "name": "edifact-message-identification",
+      "domain": "edifact",
+      "prompt": "I'm a supplier in Japan and my buyer wants me to send ship notices via EDI. Which EDIFACT message type do I need and how is it set up?",
+      "expected_output": "DESADV D96A (Despatch Advice). Direction: Inbound (Supplier→Buyer). cXML equivalent: ShipNoticeRequest. Set up via Managed Gateway: enable EDIFACT channel, set D96A version, map fields. Test with Test Central. Links to spec PDF."
+    },
+    {
+      "id": 18,
+      "name": "supplier-registration",
+      "domain": "account",
+      "prompt": "I received a TRR email from a new buyer. What do I need to do to complete registration on SAP Business Network?",
+      "expected_output": "Click link in TRR email → registration page → choose Enterprise or Standard → enter company details (legal name, address, tax ID, DUNS) → create admin user → accept T&Cs → ANID assigned (AN + 11 digits). Complete profile: banking, certifications, payment preferences."
+    },
+    {
+      "id": 19,
+      "name": "document-routing-setup",
+      "domain": "account",
+      "prompt": "How do I configure document routing on SBN so POs are automatically sent to my ERP system?",
+      "expected_output": "Settings → Electronic Order Routing → choose method: cXML HTTP (enter endpoint URL), EDI via Managed Gateway (channel config), Email PDF, or Portal. Can set per document type and per customer. Priority: Customer-specific → Doc-type → Default."
+    },
+    {
+      "id": 20,
+      "name": "buyer-transaction-rules",
+      "domain": "buyer-admin",
+      "prompt": "As a buyer admin, what transaction rules can I configure for invoice validation?",
+      "expected_output": "Tolerance rules (accept within X% of PO), duplicate invoice check, required tax fields (tax ID, rate, amount), date rules (reject if older than N days), line-level PO matching requirement, ASN required before invoice, PO acknowledgement required. Location: Administration → Transaction Rules."
+    },
+    {
+      "id": 21,
+      "name": "gitp-integration-process",
+      "domain": "integration",
+      "prompt": "What is GITP and how does a supplier use it to prepare for integration?",
+      "expected_output": "Guided Integration for Trading Partners. 5 steps: Enter GITP (Integration tab), Complete Integration Profile (capabilities + doc types), Compatibility Dashboard (traffic-light buyer matching), Compare & Reconcile Templates (SAP Golden vs buyer template), Map in Managed Gateway. Lists 11 OC rejection codes."
+    },
+    {
+      "id": 22,
+      "name": "bn4l-gtt-milestones",
+      "domain": "bn4l",
+      "prompt": "What event types does BN4L GTT support for tracking shipments?",
+      "expected_output": "Lists planned events (DEPARTURE, ARRIV_DEST, LOAD_BEGIN/END, UNLOAD_BEGIN/END, COUPLING, DECOUPLING, POPU, POD) and unplanned events (DELAYED, GEOLOC, DELIVERED, POD, EXCEPTION, etc.). Notes CUSTOMS_CLEARED is custom event. Mentions event reason codes."
+    },
+    {
+      "id": 23,
+      "name": "bn4l-carrier-onboarding",
+      "domain": "bn4l",
+      "prompt": "How does a carrier get onboarded to SAP BN4L?",
+      "expected_output": "5 phases: Shipper invites via Discover and Invite Carriers app → Carrier receives email, places SAP Store order, activates tenant → Accepts connection in Manage Invitations → Shipper maps LBN ID to carrier BP (LBN001) → Carrier creates Technical User and configures outbound connection."
+    },
+    {
+      "id": 24,
+      "name": "bn4l-dock-scheduling",
+      "domain": "bn4l",
+      "prompt": "How does dock appointment scheduling work in BN4L?",
+      "expected_output": "Carrier self-books via Self-Book Dock Appointments tile → selects FO from Ready for Booking list → picks slot → Booked. Gate check-in via Manage Gate Operations. Supports guest user (driver) booking via time-limited URL. Recurring block times configurable."
+    },
+    {
+      "id": 25,
+      "name": "oauth-setup-apj",
+      "domain": "api",
+      "prompt": "I need to set up OAuth 2.0 for API access from my Australian SAP Business Network account. What's the token endpoint and how do I get a token?",
+      "expected_output": "AU token URL: https://api.au.cloud.ariba.com/v2/oauth/token. Client credentials grant: POST with Basic auth (base64 of client_id:client_secret), grant_type=client_credentials. Use token as Bearer in API calls to https://openapi.au.cloud.ariba.com/."
+    },
+    {
+      "id": 26,
+      "name": "india-einvoicing",
+      "domain": "invoicing",
+      "prompt": "I'm an Indian supplier on SBN. What are the e-invoicing requirements I need to follow?",
+      "expected_output": "AATO above ₹5 Crore requires IRN from IRP. IRN = SHA-256 of Supplier GSTIN + Invoice Number + Doc Type + FY. QR code with 8 parameters. 30-day reporting rule from April 2025 for ≥₹10Cr. Path: ERP generates JSON → IRP returns IRN + QR → submit to buyer via SBN."
+    },
+    {
+      "id": 27,
+      "name": "japan-jct-qualified-invoice",
+      "domain": "invoicing",
+      "prompt": "What is the Japan Qualified Invoice System and how does it affect suppliers on SBN?",
+      "expected_output": "Effective Oct 2023. Buyers can only claim JCT input tax credit from registered issuers. T-number: T + 13 digits. Configure in SBN: Administration → Legal Profile. 7 mandatory fields on qualified invoice. Transitional: 80% credit from non-registered (2023-2026), 50% (2026-2029), 0% after."
+    },
+    {
+      "id": 28,
+      "name": "australia-peppol",
+      "domain": "invoicing",
+      "prompt": "Does SAP Business Network support Peppol e-invoicing for Australian suppliers?",
+      "expected_output": "SBN is eInvoicing Ready: Receive Only. Full send/receive requires SAP DRC Peppol Service. Format: PINT A-NZ (mandatory since May 2025, BIS 3.0 retired). ABN used as Peppol Participant ID. NCEs must receive Peppol since July 2022; 30% target by July 2026."
+    },
+    {
+      "id": 29,
+      "name": "sbn-discovery-profile",
+      "domain": "discovery",
+      "prompt": "How can I optimize my supplier profile on SAP Business Network Discovery to be found by more buyers?",
+      "expected_output": "Key levers: UNSPSC category selection (broad + specific, up to 50 codes), 7 certification categories (Environmental, Energy, Diversity, Quality, Security, Social Enterprise, Other), profile completeness, Verified badge, Promote subscription for higher ranking. Posting responses are free."
+    },
+    {
+      "id": 30,
+      "name": "dynamic-discounting",
+      "domain": "payment",
+      "prompt": "What is dynamic discounting on SAP Business Network and how does it work?",
+      "expected_output": "Buyer-funded early payment. 3 types: SEPTO (standing auto-apply), Buyer-Initiated Ad Hoc, Supplier-Initiated. Calculation: Discount = Amount × (APR/365) × Days Early. Auto-acceptance rules configurable. VAT regions: credit memo auto-generated for discount amount."
+    },
+    {
+      "id": 31,
+      "name": "temp-labor-timesheet",
+      "domain": "temp-labor",
+      "prompt": "How do I create and submit a time sheet for temporary labor on SBN?",
+      "expected_output": "Fulfillment → Time Sheets → Create Time Sheet → reference Service PO → enter worker reference, service period, hours per day → attach supporting docs → submit. Buyer reviews and approves. After approval, create Service Invoice."
+    },
+    {
+      "id": 32,
+      "name": "report-scheduling",
+      "domain": "reports",
+      "prompt": "How do I set up a scheduled invoice summary report on SAP Business Network?",
+      "expected_output": "Reports → Reporting → Create Report → select Invoice Summary type → set date range and filters → save as template. Schedule: daily/weekly/monthly delivery via email or download. Format: CSV, Excel, or PDF."
+    },
+    {
+      "id": 33,
+      "name": "freight-dispute",
+      "domain": "bn4l",
+      "prompt": "A carrier submitted an invoice with charges that don't match the freight order. How are disputes handled in BN4L?",
+      "expected_output": "System detects mismatch → Dispute created (In Dispute) → Shipper reviews in Manage Disputes → Accept/Reject/Counter-proposal. If accepted: Submitted for Confirmation → TM confirms → Resolved. Auto-approval if within tolerance. Multi-step internal approval workflow configurable."
+    }
+  ]
+}
